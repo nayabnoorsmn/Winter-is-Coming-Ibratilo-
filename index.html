@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Is Coming</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #ffffff;
+            position: relative;
+            background: #050d1a;
+        }
+
+        /* Sky Background & Atmosphere */
+        .sky-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 75% 20%, #152d4a 0%, #060e1a 85%);
+            z-index: 1;
+        }
+
+        /* Full Moon */
+        .moon {
+            position: absolute;
+            top: 30px;
+            right: 110px;
+            width: 105px;
+            height: 105px;
+            background: radial-gradient(circle, #ffffff 65%, #e0f7fa 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 45px rgba(224, 247, 250, 0.9), 0 0 90px rgba(0, 229, 255, 0.4);
+            z-index: 2;
+        }
+
+        /* Background Landscape */
+        .landscape-svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 330px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Twinkling Stars */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: blink 2.5s infinite ease-in-out alternate;
+            z-index: 2;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.4); box-shadow: 0 0 10px #00e5ff; }
+        }
+
+        /* Falling Snowflakes */
+        .snowflake {
+            position: absolute;
+            top: -20px;
+            color: #e0f7fa;
+            opacity: 0.9;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 35;
+            text-shadow: 0 0 6px #00e5ff;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.15; }
+        }
+
+        /* Curved Hanging Bunting Flags */
+        .curved-bunting {
+            position: absolute;
+            top: 0;
+            width: 330px;
+            height: 100px;
+            z-index: 20;
+        }
+        .curved-bunting.left { left: -10px; }
+        .curved-bunting.right { right: -10px; transform: scaleX(-1); }
+
+        /* Main Glassmorphism Container */
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            height: 85vh;
+            background: rgba(8, 20, 38, 0.62);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 2px solid rgba(179, 229, 252, 0.3);
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 50px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 25px rgba(0, 229, 255, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- Title with Winter Cap Attachment --- */
+        .title-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Winter Cap positioning over 'W' */
+        .winter-cap {
+            position: absolute;
+            top: -38px;
+            left: -20px;
+            width: 65px;
+            height: 65px;
+            z-index: 25;
+            transform: rotate(-15deg);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+            animation: capWiggle 3s ease-in-out infinite alternate;
+        }
+        
+
+        /* Snow Accumulation Layer on Box Bottom */
+        .box-snow-drift {
+            position: absolute;
+            bottom: -11px;
+            left: -2%;
+            width: 102%;
+            height: 45px;
+            z-index: 25;
+            pointer-events: none;
+        }
+
+        /* Left Content Area */
+        .left-content {
+            flex: 1.3;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            padding-left: 110px;
+        }
+
+        /* Street Lamp & Centered Light Cone */
+        .street-lamp-wrapper {
+            position: absolute;
+            left: -35px;
+            bottom: -150px;
+            width: 150px;
+            height: 115%;
+            z-index: 18;
+            pointer-events: none;
+        }
+
+        /* Light Cone Centered Under Lamp Mouth */
+        .lamp-light-cone {
+            position: absolute;
+            top: 62px;
+            left: -40px;
+            width: 210px;
+            height: 380px;
+            background: linear-gradient(180deg, rgba(255, 236, 179, 0.5) 0%, rgba(255, 224, 130, 0.2) 55%, rgba(255, 224, 130, 0.01) 100%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            filter: blur(2px);
+            z-index: 17;
+            animation: lampFlicker 3.5s infinite alternate;
+        }
+
+        @keyframes lampFlicker {
+            0%, 100% { opacity: 0.85; }
+            50% { opacity: 0.98; }
+            75% { opacity: 0.8; }
+        }
+
+        /* Walking Cat Directly on the Bottom Snowy Border Under Lamp Light */
+        .walking-cat-on-snow {
+            position: absolute;
+            bottom: -8px;
+            left: 15px;
+            width: 75px;
+            height: 55px;
+            z-index: 30;
+            pointer-events: none;
+            animation: catWalkAlongBorder 4.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes catWalkAlongBorder {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(45px); }
+        }
+
+        /* Attached Leg Swings */
+        .leg-front-1 { animation: walkSwingA 0.5s infinite alternate; transform-origin: 50px 28px; }
+        .leg-front-2 { animation: walkSwingB 0.5s infinite alternate; transform-origin: 45px 28px; }
+        .leg-back-1  { animation: walkSwingA 0.5s infinite alternate; transform-origin: 30px 28px; }
+        .leg-back-2  { animation: walkSwingB 0.5s infinite alternate; transform-origin: 25px 28px; }
+
+        @keyframes walkSwingA {
+            0% { transform: rotate(-16deg); }
+            100% { transform: rotate(16deg); }
+        }
+
+        @keyframes walkSwingB {
+            0% { transform: rotate(16deg); }
+            100% { transform: rotate(-16deg); }
+        }
+
+        .cat-tail-anim {
+            animation: tailWag 1.6s ease-in-out infinite alternate;
+            transform-origin: 20px 22px;
+        }
+
+        @keyframes tailWag {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-18deg); }
+        }
+
+        /* --- Title with Winter Cap Attachment --- */
+        .title-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 80px;
+        }
+
+        /* Winter Cap positioning over 'W' */
+        .winter-cap {
+            position: absolute;
+            top: -38px;
+            left: -20px;
+            width: 65px;
+            height: 65px;
+            z-index: 25;
+            transform: rotate(-15deg);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+            animation: capWiggle 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes capWiggle {
+            0% { transform: rotate(-15deg) scale(1); }
+            100% { transform: rotate(-8deg) scale(1.05); }
+        }
+
+        h1.title {
+            font-size: 3.8rem;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 30%, #b2ebf2 70%, #4dd0e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.6));
+            animation: glowPulse 2.5s infinite alternate;
+            margin-bottom: -60px;
+        }
+
+        @keyframes glowPulse {
+            0% { filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.4)); }
+            100% { filter: drop-shadow(0 0 22px rgba(0, 229, 255, 0.9)); }
+        }
+
+        /* Subtitle Badge */
+        .subtitle-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(128, 222, 234, 0.4);
+            border-radius: 20px;
+            width: fit-content;
+            font-size: 0.95rem;
+            color: #e0f7fa;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+            margin-top: 80px;
+            margin-bottom: -60px;
+        }
+
+        /* Original Restored Bear */
+        .bear-wrapper {
+            position: absolute;
+            top: -20px;
+            right: 40px;
+            width: 150px;
+            height: 160px;
+            z-index: 20;
+        }
+
+        .bear-entire-body {
+            animation: bearSway 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes bearSway {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+
+        .bear-hands {
+            animation: rubHands 0.6s ease-in-out infinite alternate;
+            transform-origin: center;
+        }
+
+        @keyframes rubHands {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-3px) rotate(4deg); }
+        }
+
+        /* Precise Fog Breath From Nose/Lips */
+        .smoky-fog-container {
+            position: absolute;
+            top: 72px;
+            left: 55px;
+            pointer-events: none;
+            z-index: 25;
+        }
+
+        .fog-puff {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(220,245,255,0.4) 60%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(2.5px);
+            opacity: 0;
+            animation: smokeRise 2.5s infinite ease-out;
+        }
+
+        .fog-puff:nth-child(2) { animation-delay: 0.7s; }
+        .fog-puff:nth-child(3) { animation-delay: 1.4s; }
+
+        @keyframes smokeRise {
+            0% { opacity: 0; transform: translate(0, 0) scale(0.3); }
+            30% { opacity: 0.85; transform: translate(-15px, -10px) scale(1.2); }
+            100% { opacity: 0; transform: translate(-40px, -30px) scale(2.2); }
+        }
+
+        /* Smiley Face */
+        .smiley-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 60px 0 4px 60px;
+        }
+
+        .winter-smiley {
+            width: 46px;
+            height: 46px;
+            filter: drop-shadow(0 0 10px #00e5ff);
+            animation: floatSmiley 2.2s infinite ease-in-out alternate;
+        }
+
+        @keyframes floatSmiley {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+
+        /* Interactive Button */
+        .btn-click {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00e5ff, #00838f);
+            border: none;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            width: fit-content;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            animation: btnGlow 2s infinite alternate;
+            margin-bottom: 50px;
+        }
+
+        @keyframes btnGlow {
+            0% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
+            100% { box-shadow: 0 0 30px rgba(0, 229, 255, 0.9); }
+        }
+
+        .btn-click:hover { transform: translateY(-3px) scale(1.04); }
+
+        /* Right Content Card */
+        .right-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .winter-orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #80deea 60%, #00bcd4 100%);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+            animation: floatOrb 4s ease-in-out infinite alternate;
+            z-index: 12;
+        }
+        .orb1 { width: 35px; height: 35px; top: -15px; left: 10px; }
+        .orb2 { width: 45px; height: 45px; bottom: 10px; right: -15px; animation-delay: 1s; }
+        .orb3 { width: 25px; height: 25px; top: 40%; right: -25px; animation-delay: 2s; }
+
+        @keyframes floatOrb {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-16px); }
+        }
+
+        .water-image-card {
+            width: 330px;
+            height: 390px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: none !important;
+            border: none !important;
+            background: transparent !important;
+            z-index: 11;
+            /* Soft edges setup taakay background ke saath merge ho jaye */
+            -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 85%, rgba(0,0,0,0) 100%);
+            mask-image: radial-gradient(circle, rgba(0,0,0,1) 85%, rgba(0,0,0,0) 100%);
+        }
+
+        .water-image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: oceanWave 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes oceanWave {
+            0% { transform: scale(1.05) translateY(0px); }
+            50% { transform: scale(1.08) translateY(-6px) skewX(1.5deg); }
+            100% { transform: scale(1.06) translateY(4px) skewX(-1.5deg); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(4, 12, 24, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #0e2a47, #163d66);
+            padding: 35px;
+            border-radius: 22px;
+            border: 2px solid rgba(128, 222, 234, 0.5);
+            width: 90%;
+            max-width: 460px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.4);
+            animation: popUp 0.4s ease-out;
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute; top: 15px; right: 20px;
+            color: #80deea; font-size: 1.6rem; cursor: pointer;
+        }
+        .modal h2 { margin-bottom: 15px; color: #80deea; font-size: 1.6rem; }
+        .modal p { line-height: 1.7; color: #e0f7fa; font-size: 1rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Sky Background & Atmosphere -->
+    <div class="sky-bg"></div>
+    <div class="moon"></div>
+    <div id="stars-container"></div>
+    <div id="snow-container"></div>
+
+    <!-- Snowy Landscape SVG -->
+    <svg class="landscape-svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="#162846" d="M0,192L288,128L576,224L864,96L1152,192L1440,96L1440,320L0,320Z"></path>
+        <path fill="#21375c" d="M0,224L360,160L720,256L1080,192L1440,240L1440,320L0,320Z"></path>
+        <path fill="#e0f7fa" opacity="0.9" d="M0,280 Q360,220 720,270 Q1080,320 1440,260 L1440,320 L0,320 Z"></path>
+    </svg>
+
+    <!-- Curved Bunting Flags -->
+    <svg class="curved-bunting left" viewBox="0 0 300 100">
+        <path d="M 10 10 Q 150 70 290 10" stroke="#80deea" stroke-width="2" fill="none"/>
+        <polygon points="40,24 25,65 55,65" fill="#00e5ff"/>
+        <polygon points="90,37 75,78 105,78" fill="#80deea"/>
+        <polygon points="140,42 125,83 155,83" fill="#ffffff"/>
+        <polygon points="190,37 175,78 205,78" fill="#00e5ff"/>
+        <polygon points="240,24 225,65 255,65" fill="#80deea"/>
+    </svg>
+
+    <svg class="curved-bunting right" viewBox="0 0 300 100">
+        <path d="M 10 10 Q 150 70 290 10" stroke="#80deea" stroke-width="2" fill="none"/>
+        <polygon points="40,24 25,65 55,65" fill="#00e5ff"/>
+        <polygon points="90,37 75,78 105,78" fill="#80deea"/>
+        <polygon points="140,42 125,83 155,83" fill="#ffffff"/>
+        <polygon points="190,37 175,78 205,78" fill="#00e5ff"/>
+        <polygon points="240,24 225,65 255,65" fill="#80deea"/>
+    </svg>
+
+    <!-- Main Container Card -->
+    <div class="container">
+        
+        <!-- Natural Curvy Snow Accumulation Layer on Bottom Border -->
+        <svg class="box-snow-drift" viewBox="0 0 1000 45" preserveAspectRatio="none">
+            <path d="M 0 45 Q 100 10, 250 25 Q 400 5, 550 20 Q 750 0, 1000 25 L 1000 45 Z" fill="#ffffff"/>
+            <path d="M 0 45 Q 150 18, 350 28 Q 600 12, 850 30 L 1000 45 Z" fill="#e0f7fa" opacity="0.7"/>
+        </svg>
+
+        <!-- Walking Cat Directly Positioned On the Snowy Drift Border Under Lamp -->
+        <div class="walking-cat-on-snow">
+            <svg viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cat Body -->
+                <ellipse cx="38" cy="22" rx="16" ry="10" fill="#0a0a0a"/>
+                <!-- Head Facing Right -->
+                <circle cx="54" cy="14" r="8" fill="#0a0a0a"/>
+                <!-- Ears -->
+                <polygon points="51,7 55,0 57,7" fill="#0a0a0a"/>
+                <polygon points="57,7 61,1 62,8" fill="#0a0a0a"/>
+                <!-- Yellow Eyes -->
+                <circle cx="58" cy="13" r="1.5" fill="#ffeb3b"/>
+                <!-- Tail -->
+                <path class="cat-tail-anim" d="M 22 22 C 12 15, 10 32, 4 18" stroke="#0a0a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Walking Legs Attached to Body -->
+                <rect class="leg-front-1" x="50" y="28" width="3.5" height="15" rx="1.5" fill="#0a0a0a"/>
+                <rect class="leg-front-2" x="44" y="28" width="3.5" height="15" rx="1.5" fill="#0a0a0a"/>
+                <rect class="leg-back-1"  x="30" y="28" width="3.5" height="15" rx="1.5" fill="#0a0a0a"/>
+                <rect class="leg-back-2"  x="24" y="28" width="3.5" height="15" rx="1.5" fill="#0a0a0a"/>
+            </svg>
+        </div>
+
+        <div class="left-content">
+            
+            <!-- Lamp Pole Base & Centered Light Cone -->
+            <div class="street-lamp-wrapper">
+                <div class="lamp-light-cone"></div>
+                <svg viewBox="0 0 150 420" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Lamp Pole Base & Stand -->
+                    <rect x="58" y="70" width="14" height="310" fill="#1a252f"/>
+                    <rect x="44" y="375" width="42" height="15" rx="4" fill="#1a252f"/>
+                    <!-- Symmetric Lamp Shade Mounted Centered On Top Of Pole -->
+                    <path d="M 65 70 L 65 48" stroke="#1a252f" stroke-width="6"/>
+                    <polygon points="20,68 110,68 90,32 40,32" fill="#2c3e50"/>
+                    <polygon points="28,68 102,68 86,40 44,40" fill="#ffe082"/>
+                </svg>
+            </div>
+
+            <!-- Original Restored Bear + Fog Breath from Nose/Lips -->
+            <div class="bear-wrapper">
+                <!-- Precise Fog Breath Origin -->
+                <div class="smoky-fog-container">
+                    <div class="fog-puff"></div>
+                    <div class="fog-puff"></div>
+                    <div class="fog-puff"></div>
+                </div>
+                
+                <svg class="bear-entire-body" viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <!-- Bear Ears -->
+                        <circle cx="60" cy="60" r="22" fill="#795548"/>
+                        <circle cx="60" cy="60" r="13" fill="#d7ccc8"/>
+                        <circle cx="140" cy="60" r="22" fill="#795548"/>
+                        <circle cx="140" cy="60" r="13" fill="#d7ccc8"/>
+                        <!-- Head -->
+                        <circle cx="100" cy="95" r="48" fill="#8d6e63"/>
+                        <!-- Snout & Nose -->
+                        <ellipse cx="100" cy="105" rx="20" ry="15" fill="#d7ccc8"/>
+                        <ellipse cx="100" cy="98" rx="8" ry="6" fill="#3e2723"/>
+                        <!-- Eyes -->
+                        <circle cx="82" cy="85" r="5" fill="#212121"/>
+                        <circle cx="118" cy="85" r="5" fill="#212121"/>
+                        <!-- Original Winter Cap -->
+                        <path d="M 55 75 Q 100 35 145 75 Z" fill="#00bcd4"/>
+                        <rect x="52" y="70" width="96" height="12" rx="6" fill="#ffffff"/>
+                        <circle cx="100" cy="36" r="10" fill="#ffffff"/>
+                        <!-- Original Scarf -->
+                        <path d="M 58 120 Q 100 145 142 120 Q 148 135 140 142 Q 100 160 60 142 Z" fill="#e91e63"/>
+                        <!-- Rubbing Paws/Hands Animation -->
+                        <g class="bear-hands">
+                        <circle cx="85" cy="135" r="14" fill="#795548"/>
+                        <circle cx="105" cy="135" r="14" fill="#795548"/>
+                        </g>           
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Title with Winter Cap -->
+            <div class="title-container">
+                <!-- Winter Beanie Cap on "Winter Is Coming" -->
+                <svg class="winter-cap" viewBox="0 0 100 100">
+                    <path d="M 20 60 Q 50 15 80 60 Z" fill="#e91e63"/>
+                    <rect x="15" y="55" width="70" height="15" rx="7" fill="#ffffff"/>
+                    <circle cx="50" cy="20" r="10" fill="#ffffff"/>
+                </svg>
+                <h1 class="title">Winter Is<br>Coming</h1>
+            </div>
+
+            <div class="subtitle-badge">❄️ Season of Frost & Snow</div>
+
+            <!-- Lower Centered Smiley Face -->
+            <div class="smiley-container">
+                <svg class="winter-smiley" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="#80deea" stroke="#ffffff" stroke-width="3"/>
+                    <!-- Cold Cheeks & Eyes -->
+                    <circle cx="35" cy="40" r="6" fill="#0b1a2d"/>
+                    <circle cx="65" cy="40" r="6" fill="#0b1a2d"/>
+                    <ellipse cx="25" cy="55" rx="6" ry="4" fill="#ff80ab"/>
+                    <ellipse cx="75" cy="55" rx="6" ry="4" fill="#ff80ab"/>
+                    <!-- Happy Cold Smile -->
+                    <path d="M 35 60 Q 50 78 65 60" fill="none" stroke="#0b1a2d" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <button class="btn-click" onclick="openModal()">Explore Winter ❄️</button>
+        </div>
+
+        <!-- Right Content Card -->
+        <div class="right-content">
+            <div class="winter-orb orb1"></div>
+            <div class="winter-orb orb2"></div>
+            <div class="winter-orb orb3"></div>
+            
+            <div class="water-image-card">
+                <img src="./images/657682428_18026123303804600_822910252169247595_n.jpg" alt="Winter Portrait">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Popup -->
+    <div class="modal" id="winterModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>❄️ Winter Kingdom ❄️</h2>
+            <p>Welcome to the winter realm. Experience the soothing chill, peaceful snowfalls, and magical frosty atmosphere crafted just for you.</p>
+        </div>
+    </div>
+
+    <script>
+        // Blinking Stars
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 65; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = Math.random() * 3 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.top = Math.random() * 60 + 'vh';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Falling Snowflakes
+        const snowContainer = document.getElementById('snow-container');
+        const snowIcons = ['❄', '❅', '❆'];
+        for (let i = 0; i < 50; i++) {
+            const flake = document.createElement('div');
+            flake.classList.add('snowflake');
+            flake.innerHTML = snowIcons[Math.floor(Math.random() * snowIcons.length)];
+            flake.style.left = Math.random() * 100 + 'vw';
+            flake.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            flake.style.fontSize = (Math.random() * 12 + 10) + 'px';
+            flake.style.animationDelay = Math.random() * 5 + 's';
+            snowContainer.appendChild(flake);
+        }
+
+        // Modal Functions
+        function openModal() { document.getElementById('winterModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('winterModal').style.display = 'none'; }
+    </script>
+</body>
+</html>
